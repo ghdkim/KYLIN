@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYLIN</title>
+    <!-- Include Nunito font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Updating color palette */
+        :root {
+            --color-1: #FF9A00; /* Bright orange */
+            --color-2: #FF5722; /* Deep orange */
+            --color-3: #E64A19; /* Reddish brown */
+            --color-4: #263238; /* Dark slate */
+            --color-5: #000A12; /* Almost black */
+            --light-gray: #AAB4BE; /* Light gray for input and buttons */
+        }
+
+        body, h1, h2, h3, h4, p, a {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-4);
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--color-4);
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            margin-left: 20px;
+            font-size: 2.5rem;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav a:hover {
+            color: var(--color-1);
+            text-decoration: underline;
+        }
+
+        /* Style for the main-heading and chart container */
+        .main-heading, .chart-container {
+            flex: 1;
+        }
+
+        .main-heading {
+            margin-top: 40px;
+            padding-right: 20px;
+        }
+
+        .main-heading h2 {
+            font-family: 'Nunito', serif;
+            font-weight: bold;
+            color: whitesmoke;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .main-heading p {
+            font-family: 'Nunito', serif;
+            color: darkgrey;
+            font-size: 25px;
+        }
+
+        /* Style for the main content area */
+        .content {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px; /* Adjust as needed */
+        }
+
+        /* Placeholder for the chart container */
+        .chart-container {
+            min-height: 300px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .loader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo2.png') }}" alt="logo" class="logo">
+            <h1>KYLIN</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/news" onclick="showLoader('loader')">News</a></li>
+                    <li><a href="/moves" onclick="showLoader('loader')">Moves</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/charts">Charts</a></li>
+                    <li><a href="/edits">Edits</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="loader" id="loader">
+            Loading, please wait...
+        </div>
+        <div class="content">
+            <section class="main-heading">
+                <h2>Tracking Executive Profiles and Latest News</h2>
+                <p>Our platform for data and people analytics helps you remain ahead of the curve, saves money and time on market research, and supports your corporate strategy.</p>
+            </section>
+            <div class="chart-container">
+                <p>Interactive Chart Placeholder</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            setTimeout(function() {
+                loader.style.display = 'none';
+            }, 100000);
+        }
+    </script>
+</body>
+</html>

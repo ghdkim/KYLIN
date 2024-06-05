@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYLIN</title>
+    <!-- Include Nunito font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Updating color palette */
+        :root {
+            --color-1: #FF9A00; /* Bright orange */
+            --color-2: #FF5722; /* Deep orange */
+            --color-3: #E64A19; /* Reddish brown */
+            --color-4: #263238; /* Dark slate */
+            --color-5: #000A12; /* Almost black */
+            --light-gray: #AAB4BE; /* Light gray for input and buttons */
+        }
+
+        body, h1, h2, h3, h4, p, a {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-4);
+            color: var(--color-3);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--color-4);
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            margin-left: 20px;
+            font-size: 2.5rem;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav a:hover {
+            color: var(--color-1);
+            text-decoration: underline;
+        }
+
+        .main-heading {
+            margin-top: 40px;
+        }
+
+        .main-heading h2 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .main-heading p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* space between cards */
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .card {
+            width: calc(33.333% - 20px); /* Three cards per row, minus gap */
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift card on hover */
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            display: block; /* remove extra space below image */
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            margin: 10px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .card-title a {
+            color: var(--color-3);
+            text-decoration: none;
+        }
+
+        .card-title a:hover {
+            text-decoration: underline;
+        }
+
+        .card-description {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card-date {
+            font-size: 0.8em;
+            color: var(--light-gray);
+        }
+
+        .moves-news {
+            font-family: 'Nunito', sans-serif;
+            color: var(--color-1);
+            font-size: 1.75rem;
+            margin: 40px 0 20px;
+            text-align: left;
+        }
+
+        .see-more {
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--color-1); /* Bright orange */
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .card.recent-update {
+            border: 3px solid var(--color-1); /* Bright orange border */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo2.png') }}" alt="logo" class="logo">
+            <h1>KYLIN</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/moves">Moves</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/charts">Charts</a></li>
+                    <li><a href="/edits">Edits</a></li>
+                </ul>
+            </nav>
+        </header>
+        <h2 class="moves-news">Executive Moves News</h2>
+        <div class="card-container">
+            {% set recent_date = move_news[0]['Date'] if move_news else None %}
+            {% for move in move_news[:6] %}
+            <div class="card {{ 'recent-update' if move['Date'] == recent_date else '' }}">
+                <a href="{{ move['URL'] }}">
+                    <img src="{{ move['Image'] }}" alt="{{ move['Title'] }}" />
+                </a>
+                <div class="card-content">
+                    <div class="card-title">
+                        <a href="{{ move['URL'] }}">{{ move['Title'] }}</a>
+                    </div>
+                    <p class="card-description">{{ move['Description'] }}</p>
+                    <div class="card-date">{{ move['Date'] }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/news/moves" class="see-more">See more</a>
+    </div>
+</body>
+</html>

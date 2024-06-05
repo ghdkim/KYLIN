@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYLIN</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Assigning color palette and other styles from moves.html */
+        :root {
+            --color-1: #FF9A00; /* Bright orange */
+            --color-2: #FF5722; /* Deep orange */
+            --color-3: #E64A19; /* Reddish brown */
+            --color-4: #263238; /* Dark slate */
+            --color-5: #000A12; /* Almost black */
+            --light-gray: #AAB4BE; /* Light gray for input and buttons */
+        }
+
+        body, h1, h2, h3, h4, p, a {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        a {
+            color: whitesmoke;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover, .special-link:hover {
+            color: var(--color-1);
+        }
+
+        body {
+            background-color: var(--color-4);
+            color: var(--color-3);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--color-4);
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            margin-left: 20px;
+            font-size: 2rem;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 06px;
+            transition: color 0.3s ease-in-out;
+            font-size: 0.8rem;
+        }
+
+        .nav a:hover {
+            color: var(--color-1);
+            text-decoration: underline;
+        }
+
+        .main-heading {
+            margin-top: 40px;
+        }
+
+        .main-heading h2 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .main-heading p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo2.png') }}" alt="logo" class="logo">
+            <h1>KYLIN</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/moves">Moves</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/charts">Charts</a></li>
+                    <li><a href="/edits">Edits</a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <main class="container">
+        <h1>Search Results for "{{ keyword }}":</h1>
+        <a href="{{ url_for('download_file', filename=filename) }}" download class="special-link">Export to file</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Position</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for profile in profiles %}
+                <tr>
+                    <td>{{ profile['Name'] }}</td>
+                    <td>{{ profile['Position'] }}</td>
+                    <td>{{profile['Company']}}</td>
+                    <td>{{ profile['Location'] }}</td>
+                    <td><a href="{{ profile['URL'] }}" target="_blank">Profile Link &rarr;</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

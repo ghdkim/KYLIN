@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYLIN</title>
+    <!-- Include Nunito font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Updating color palette */
+        :root {
+            --color-1: #FF9A00; /* Bright orange */
+            --color-2: #FF5722; /* Deep orange */
+            --color-3: #E64A19; /* Reddish brown */
+            --color-4: #263238; /* Dark slate */
+            --color-5: #000A12; /* Almost black */
+            --light-gray: #AAB4BE; /* Light gray for input and buttons */
+        }
+
+        body, h1, h2, h3, h4, p, a {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-4);
+            color: var(--color-3);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--color-4);
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            margin-left: 20px;
+            font-size: 2.5rem;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav a:hover {
+            color: var(--color-1);
+            text-decoration: underline;
+        }
+
+        .search-container {
+            position: relative;
+            display: block;
+            justify-content: left;
+            align-items: center;
+            border-bottom: 2px solid #AAB4BE;
+            margin: 20px 0;
+            padding-bottom: 10px;
+        }
+
+        .profile-section {
+            text-align: left;
+            padding: 20px 0;
+            color: white;
+        }
+
+        .profile-section h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .profile-section span {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 200;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .search-box input[type="text"] {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            background-color: transparent;
+            color: whitesmoke;
+            margin-right: 10px;
+            font-family: 'Nunito', sans-serif
+        }
+
+        .search-box input[type="text"]::placeholder {
+            color: var(--light-gray);
+        }
+
+        .search-box button {
+            background-color: transparent;
+            color: whitesmoke;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 10px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .filter-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 20px 20px;
+            border: none;
+            background-color: transparent;
+            color: whitesmoke;
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-left: 10px;
+            position: relative;
+            top: 1px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .dropdown-arrow {
+            border: none;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 4px solid whitesmoke;
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 5px;
+            margin-bottom: -3px;
+        }
+
+        /* Base dropdown container styling */
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            background-color: var(--color-4);
+            padding: 10px;
+            border-radius: 8px;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            min-width: 200px;
+            color: #000;
+            box-sizing: border-box;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        /* Input within the dropdown */
+        .dropdown-content input[type="text"] {
+            border: 2px solid var(--color-2);
+            margin-bottom: 10px;
+            outline: none;
+            box-shadow: none;
+            border-radius: 10px;
+            width: 90%;
+            padding: 8px;
+        }
+
+        #reset-filter {
+            background-color: var(--color-3);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 90.8%;
+            display: block;
+        }
+
+        #reset-filter:hover {
+            background-color: var(--color-3);
+        }
+
+        /* Styling for the form itself */
+        form {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Ensure the filter button stays aligned with the search box */
+        .filter-button {
+            margin-left: auto;
+        }
+
+        /* Style adjustments for button and inputs inside the form */
+        form input, form button {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        form button {
+            background-color: var(--color-1);
+            color: white;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        /* Additional form button hover effect */
+        form button:hover {
+            background-color: var(--color-2);
+        }
+
+        .loader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo2.png') }}" alt="logo" class="logo">
+            <h1>KYLIN</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/moves">Moves</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/charts">Charts</a></li>
+                    <li><a href="/edits">Edits</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="profile-section">
+            <h2>Search Profiles</h2>
+            <span>Discover and Connect Talents</span>
+        </div>
+        <div class="loader" id="loader" style="display: none;">
+          Loading, please wait...
+        </div>
+        <div class="search-container">
+            <form id="searchForm" action="/search" method="GET">
+                <div class="search-box">
+                    <input type="text" id="role-input" name="role" placeholder="Search Roles e.g. Managing Director"/>
+                    <button type="submit">Search</button>
+                    <div class="filter-button" onclick="toggleDropdown()">Filters
+                        <span class="dropdown-arrow"></span>
+                    </div>
+                    <div id="dropdown-content" class="dropdown-content" onclick="event.stopPropagation()">
+                        <input type="text" id="bank-input" name="bank" placeholder="Company e.g. Citi"/>
+                        <input type="text" id="department-input" name="department" placeholder="Department e.g. Mergers and Acquisition"/>
+                        <input type="text" id="region-input" name="region" placeholder="Region e.g. Hong Kong"/>
+                        <button type="button" id="reset-filter">Reset Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            var dropdownContent = document.getElementById("dropdown-content");
+            dropdownContent.style.display = dropdownContent.style.display === "flex" ? "none" : "flex";
+        }
+
+        // Reset filter inputs
+        document.getElementById("reset-filter").addEventListener("click", function() {
+            document.getElementById("bank-input").value = "";
+            document.getElementById("region-input").value = "";
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById("searchForm");
+            searchForm.addEventListener("submit", function() {
+                const loader = document.getElementById('loader');
+                loader.style.display = 'flex'; // Show the loader
+            });
+        });
+    </script>
+</body>
+</html>

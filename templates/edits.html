@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYLIN</title>
+    <!-- Include Nunito font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Updating color palette */
+        :root {
+            --color-1: #FF9A00; /* Bright orange */
+            --color-2: #FF5722; /* Deep orange */
+            --color-3: #E64A19; /* Reddish brown */
+            --color-4: #263238; /* Dark slate */
+            --color-5: #000A12; /* Almost black */
+            --light-gray: #AAB4BE; /* Light gray for input and buttons */
+        }
+
+        body, h1, h2, h3, h4, p, a {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-4);
+            color: var(--color-3);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: var(--color-4);
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: whitesmoke;
+            margin-left: 20px;
+            font-size: 2.5rem;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav a:hover {
+            color: var(--color-1);
+            text-decoration: underline;
+        }
+
+        .search-container {
+            position: relative;
+            display: block;
+            justify-content: left;
+            align-items: center;
+            border-bottom: 2px solid #AAB4BE;
+            margin: 20px 0;
+            padding-bottom: 10px;
+        }
+
+        .profile-section {
+            text-align: left;
+            padding: 20px 0;
+            color: white;
+        }
+
+        .profile-section h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .profile-section span {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 200;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .search-box input[type="text"] {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            background-color: transparent;
+            color: whitesmoke;
+            margin-right: 10px;
+            font-family: 'Nunito', sans-serif
+        }
+
+        .search-box input[type="text"]::placeholder {
+            color: var(--light-gray);
+        }
+
+        .search-box button {
+            background-color: transparent;
+            color: whitesmoke;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 10px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .filter-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 20px 20px;
+            border: none;
+            background-color: transparent;
+            color: whitesmoke;
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-left: 10px;
+            position: relative;
+            top: 1px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .dropdown-arrow {
+            border: none;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 4px solid whitesmoke;
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 5px;
+            margin-bottom: -3px;
+        }
+
+        /* Base dropdown container styling */
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            background-color: var(--color-4);
+            padding: 10px;
+            border-radius: 8px;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            min-width: 200px;
+            color: #000;
+            box-sizing: border-box;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        /* Input within the dropdown */
+        .dropdown-content input[type="text"] {
+            border: 2px solid var(--color-2);
+            margin-bottom: 10px;
+            outline: none;
+            box-shadow: none;
+            border-radius: 10px;
+            width: 90%;
+            padding: 8px;
+        }
+
+        #reset-filter {
+            background-color: var(--color-3);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 90.8%;
+            display: block;
+        }
+
+        #reset-filter:hover {
+            background-color: var(--color-3);
+        }
+
+        /* Styling for the form itself */
+        form {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Ensure the filter button stays aligned with the search box */
+        .filter-button {
+            margin-left: auto;
+        }
+
+        /* Style adjustments for button and inputs inside the form */
+        form input, form button {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        form button {
+            background-color: var(--color-1);
+            color: white;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        /* Additional form button hover effect */
+        form button:hover {
+            background-color: var(--color-2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: whitesmoke;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: var(--color-2);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--color-5);
+        }
+
+        /* Styling for delete icon */
+        .delete-icon {
+            cursor: pointer;
+            height: 24px; /* Adjust size as needed */
+            width: 24px;
+            background-image: url('{{ url_for('static', filename='icons/delete_icon.png') }}');
+            background-size: cover;
+            border: none;
+            color: transparent;
+            background-color: transparent;
+        }
+
+        /* Styling for edit icon */
+        .edit-icon {
+            cursor: pointer;
+            height: 24px; /* Adjust size as needed */
+            width: 24px;
+            background-image: url('{{ url_for('static', filename='icons/edit_icon.png') }}');
+            background-size: cover;
+            border: none;
+            margin-right: 12px;
+            color: transparent;
+            background-color: transparent;
+        }
+
+        /* Styling for add icon */
+        .add-icon {
+            cursor: pointer;
+            height: 24px; /* Adjust size as needed */
+            width: 24px;
+            background-image: url('{{ url_for('static', filename='icons/add_icon.png') }}');
+            background-size: cover;
+            border: none;
+            margin-right: 12px;
+            color: transparent;
+            background-color: transparent;
+        }
+
+        /* Styling for Linkedin icon */
+        .linkedin-icon {
+            cursor: pointer;
+            height: 24px; /* Adjust size as needed */
+            width: 24px;
+            background-image: url('{{ url_for('static', filename='icons/linkedin_icon.png') }}');
+            background-size: cover;
+            border: none;
+            margin-right: 12px;
+            color: transparent;
+            background-color: transparent;
+        }
+
+        /* Styling for Webbsite icon */
+        .webbsite-icon {
+            cursor: pointer;
+            height: 20px; /* Adjust size as needed */
+            width: 20px;
+            background-image: url('{{ url_for('static', filename='icons/webbsite_icon.png') }}');
+            background-size: cover;
+            border: none;
+            margin-right: 12px;
+            color: transparent;
+            background-color: transparent;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        .close {
+            color: #666; /* Soft gray for the close button */
+            float: right;
+            font-size: 24px; /* Slightly smaller font size for subtlety */
+            font-weight: bold;
+            cursor: pointer; /* Ensure cursor changes to pointer to indicate clickable */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000; /* Darker color on hover/focus for better visibility and feedback */
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo2.png') }}" alt="logo" class="logo">
+            <h1>KYLIN</h1>
+            <nav>
+                <ul class="nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/moves">Moves</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/charts">Charts</a></li>
+                    <li><a href="/edits">Edits</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="profile-section">
+            <h2>Manual Edits and Searches</h2>
+        </div>
+        <div class="search-container">
+            <form action="/edits" method="POST">
+                <div class="search-box">
+                    <input type="text" id="name-input" name="name" placeholder="Search Profile Name"/>
+                    <button type="submit">Search</button>
+                    <button class="add-icon" type="button" onclick="openAddModal()" style="margin-left: 20px;"></button>
+                    <div class="filter-button" onclick="toggleDropdown()">Filters
+                        <span class="dropdown-arrow"></span>
+                    </div>
+                    <div id="dropdown-content" class="dropdown-content">
+                        <input type="text" id="position-input" name="position" placeholder="Position e.g. Managing Director"/>
+                        <input type="text" id="bank-input" name="bank" placeholder="Company e.g. Citi"/>
+                        <input type="text" id="location-input" name="location" placeholder="Location e.g. Hong Kong"/>
+                        <button type="button" id="reset-filter">Reset Filter</button>
+                    </div>
+                </div>
+            </form>
+            <div class="result-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Recent Periods</th>
+                            <th>Department</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in entries %}
+                        <tr>
+                            <td>{{ entry['Name'] }}</td>
+                            <td>{{ entry['Position'] }}</td>
+                            <td>{{ entry['Company'] }}</td>
+                            <td>{{ entry['Location'] }}</td>
+                            <td>{{ entry['Periods'] }}</td>
+                            <td>{{ entry['Department'] }}</td>
+                            <td>
+                                {% set urls = entry['URL'].split(', ') %}
+                                {% for url in urls %}
+                                    {% if 'webb-site' in url %}
+                                        <a href="{{ url }}" target="_blank"><button class="webbsite-icon">Webb-site</button></a>
+                                    {% elif 'linkedin' in url %}
+                                        <a href="{{ url }}" target="_blank"><button class="linkedin-icon">LinkedIn</button></a>
+                                    {% endif %}
+                                {% endfor %}
+                                <button class="edit-icon" onclick="openEditModal('{{ entry['Name'] }}', '{{ entry['Position'] }}', '{{ entry['Company'] }}', '{{ entry['Location'] }}', '{{ entry['Periods'] }}', '{{ entry['Department'] }}' ,'{{ entry['source_file'] }}')">Edit</button>
+                                <button class="delete-icon" onclick="deleteEntry('{{ entry['Name'] }}', '{{ entry['Position'] }}', '{{ entry['Company'] }}', '{{ entry['Location'] }}', '{{ entry['Periods'] }}', '{{ entry['Department'] }}' , '{{ entry['source_file'] }}')">Delete</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5">No results found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Editing -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editModal')">&times;</span>
+            <h2>Edit Entry</h2>
+            <form id="editForm">
+                <input type="hidden" id="editSourceFile">
+                <input type="hidden" id="editOldName"> <!-- Store original name on load and do not allow user to edit it -->
+                <label>Name:</label><input type="text" id="editName"><br>
+                <label>Position:</label><input type="text" id="editPosition"><br>
+                <label>Company:</label><input type="text" id="editCompany"><br>
+                <label>Location:</label><input type="text" id="editLocation"><br>
+                <label>Periods:</label><input type="text" id="editPeriods"><br>
+                <label>Department:</label><input type="text" id="editDepartment"><br>
+                <button type="button" onclick="saveChanges()">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Entry Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addModal')">&times;</span>
+            <h2>Add New Entry</h2>
+            <form>
+                <label>Name:</label><input type="text" id="addName"><br>
+                <label>Position:</label><input type="text" id="addPosition"><br>
+                <label>Company:</label><input type="text" id="addCompany"><br>
+                <label>Location:</label><input type="text" id="addLocation"><br>
+                <label>Periods:</label><input type="text" id="addPeriods"><br>
+                <label>Department:</label><input type="text" id="editDepartment"><br>
+                <button type="button" onclick="saveNewEntry()">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            var dropdownContent = document.getElementById("dropdown-content");
+            dropdownContent.style.display = dropdownContent.style.display === "flex" ? "none" : "flex";
+        }
+
+        // Reset filter inputs
+        document.getElementById("reset-filter").addEventListener("click", function() {
+            document.getElementById("position-input").value = "";
+            document.getElementById("bank-input").value = "";
+            document.getElementById("location-input").value = "";
+            document.getElementById("periods-input").value = "";
+            document.getElementById("department-input").value = "";
+        });
+        function deleteEntry(name, position, company, location, periods, department, sourceFile) {
+            let formData = new FormData();
+            formData.append('name', name);
+            formData.append('position', position);
+            formData.append('company', company);
+            formData.append('location', location);
+            formData.append('periods', periods);
+            formData.append('department', department);
+            formData.append('source_file', sourceFile);
+
+            fetch('/delete-entry', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    window.location.reload(); // Refresh to update the table
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Failed to delete entry.');
+            });
+        }
+
+        // Function to open the modal with data loaded for editing
+        function openEditModal(name, position, company, location, periods, department, sourceFile) {
+            document.getElementById('editOldName').value = name;
+            document.getElementById('editName').value = name;
+            document.getElementById('editPosition').value = position;
+            document.getElementById('editCompany').value = company;
+            document.getElementById('editLocation').value = location;
+            document.getElementById('editPeriods').value = periods;
+            document.getElementById('editDepartment').value = department;
+            document.getElementById('editSourceFile').value = sourceFile;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Function to save changes and update the backend
+        function saveChanges() {
+            const oldName = document.getElementById('editOldName').value; // The old name to identify the record
+            const name = document.getElementById('editName').value;
+            const position = document.getElementById('editPosition').value;
+            const company = document.getElementById('editCompany').value;
+            const location = document.getElementById('editLocation').value;
+            const periods = document.getElementById('editPeriods').value;
+            const department = document.getElementById('editDepartment').value;
+            const sourceFile = document.getElementById('editSourceFile').value;
+
+            let formData = new FormData();
+            formData.append('old_name', oldName);
+            formData.append('name', name);
+            formData.append('position', position);
+            formData.append('company', company);
+            formData.append('location', location);
+            formData.append('periods', periods);
+            formData.append('department', department);
+            formData.append('source_file', sourceFile);
+
+            fetch('/update-entry', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    closeModal('editModal');
+                    window.location.reload(); // Optionally reload the page to see changes
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update entry.');
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function saveNewEntry() {
+            const name = document.getElementById('addName').value.trim();
+            const position = document.getElementById('addPosition').value.trim();
+            const company = document.getElementById('addCompany').value.trim();
+            const location = document.getElementById('addLocation').value.trim();
+            const periods = document.getElementById('addPeriods').value.trim();
+            const department = document.getElementById('addDepartment').value.trim();
+
+            // Check if all fields are provided
+            if (!name || !position || !company || !location) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('name', name);
+            formData.append('position', position);
+            formData.append('company', company);
+            formData.append('location', location);
+            formData.append('periods', periods);
+            formData.append('department', department);
+
+            fetch('/add-entry', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);  // Show success message
+                    closeModal('addModal');  // Assuming you have a function to close modal
+                    window.location.reload(); // Optionally reload the page to see changes
+                } else {
+                    alert(data.error);  // Show error message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add new entry.');  // Error handling for network issues or JSON parsing issues
+            });
+        }
+    </script>
+</body>
+</html>

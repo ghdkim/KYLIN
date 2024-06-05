@@ -1,0 +1,11 @@
+selenium == 4.20.0
+flask == 3.0.3
+beautifulsoup4 == 4.13.0b2
+pandas == 2.2.2
+requests == 2.31.0
+openpyxl == 3.2.0b1
+fuzzywuzzy == 0.18.0
+python-levenshtein == 0.25.1
+werkzeug == 3.0.2
+collective.soupstrainer == 2.2
+npm == 0.1.1
